@@ -69,22 +69,22 @@ class InvisCloak (Algorithm):
             Hier steht Ihr Code zu Aufgabe 2.1.1 (Rauschunterdrückung)
             - Implementierung Mittelwertbildung über N Frames
         """
-        N = 5  # Anzahl der zu mittelden Frames, kann ggf. als Parameter extern gesetzt werden
+        N = 5 # Number of frames to average
 
         if not hasattr(self, "frame_buffer"):
             self.frame_buffer = []
 
-        # 添加当前帧到缓冲区
+        # Add current frame to buffer
         self.frame_buffer.append(img.copy())
 
-        # 若超过N帧，删除最旧的
+        # Keep only the last N frames
         if len(self.frame_buffer) > N:
             self.frame_buffer.pop(0)
 
-        # 转换为 float32 进行求平均，防止溢出
+        # Convert to float32 to prevent overflow when averaging
         img = np.mean(np.array(self.frame_buffer).astype(np.float32), axis=0)
 
-        # 再转回 uint8 图像
+        # Convert back to uint8
         img = np.clip(img, 0, 255).astype(np.uint8)
 
         return img
