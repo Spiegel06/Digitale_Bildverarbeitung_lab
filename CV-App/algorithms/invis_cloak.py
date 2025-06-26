@@ -69,22 +69,22 @@ class InvisCloak (Algorithm):
             Hier steht Ihr Code zu Aufgabe 2.1.1 (Rauschunterdrückung)
             - Implementierung Mittelwertbildung über N Frames
         """
-        N = 5 # Number of frames to average
+        N = 5  # Number of frames to be averaged, can be set externally as a parameter if necessary
 
         if not hasattr(self, "frame_buffer"):
             self.frame_buffer = []
 
-        # Add current frame to buffer
+        # Add the current frame to the buffer
         self.frame_buffer.append(img.copy())
 
-        # Keep only the last N frames
+        # If there are more than N frames, delete the oldest
         if len(self.frame_buffer) > N:
             self.frame_buffer.pop(0)
 
-        # Convert to float32 to prevent overflow when averaging
+        # Convert to float32 for averaging to prevent overflow.
         img = np.mean(np.array(self.frame_buffer).astype(np.float32), axis=0)
 
-        # Convert back to uint8
+        # Turning back to the uint8 image
         img = np.clip(img, 0, 255).astype(np.uint8)
 
         return img
@@ -96,20 +96,20 @@ class InvisCloak (Algorithm):
             - Histogrammspreizung berechnen
             - Transformation BGR
         """
-        # 转换到 HSV
+        # Convert to HSV
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         h, s, v = cv2.split(hsv)
 
-        # 计算 V 通道最小和最大值
+        # Calculate V-channel minimum and maximum values
         v_min = np.min(v)
         v_max = np.max(v)
 
-        # 避免除以0
+        # Avoid dividing by 0
         if v_max - v_min == 0:
             v_stretched = v
         else:
             v_stretched = ((v - v_min) / (v_max - v_min) * 255).astype(np.uint8)
-        # 合并并转换回 BGR
+        # Merge and convert back to BGR
         hsv_stretched = cv2.merge([h, s, v_stretched])
         img = cv2.cvtColor(hsv_stretched, cv2.COLOR_HSV2BGR)
 
@@ -121,14 +121,14 @@ class InvisCloak (Algorithm):
             - Histogrammberechnung und Analyse
         """
         if not self.capture_for_rgb_analysis:
-            return  # 无点击时不进行处理
+            return  # No processing when there are no clicks
 
-        print("▶ 正在保存当前图像与 RGB 直方图...")
+        print("saving...")
 
-        # 保存当前图像
+        # Save current image
         cv2.imwrite("rgb_input_image.png", img)
 
-        # 绘制 RGB 三通道直方图
+        # Plotting RGB three-channel histograms
         colors = ('b', 'g', 'r')
         plt.figure()
         for i, col in enumerate(colors):
@@ -145,9 +145,8 @@ class InvisCloak (Algorithm):
         plt.savefig("rgb_histogram.png")
         plt.close()
 
-        print("✅ 已保存：rgb_input_image.png 和 rgb_histogram.png")
+        print("saved：rgb_input_image.png 和 rgb_histogram.png")
 
-        # 重置标志位
         # self.capture_for_rgb_analysis = False
 
 
@@ -157,11 +156,11 @@ class InvisCloak (Algorithm):
             - Histogrammberechnung und Analyse im HSV-Raum
         """
         if not self.capture_for_rgb_analysis:
-            return  # 只在鼠标点击时进行分析
+            return  
 
-        print("▶ 正在保存 HSV 通道直方图...")
+        print("saving...")
 
-        # 转换到 HSV
+        # Convert to HSV
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         h, s, v = cv2.split(hsv)
 
@@ -184,8 +183,7 @@ class InvisCloak (Algorithm):
         plt.savefig("hsv_histogram.png")
         plt.close()
 
-        print("✅ HSV 直方图已保存为 hsv_histogram.png")
-        # 重置标志位
+        print("saved hsv_histogram.png")
         self.capture_for_rgb_analysis = False
 
 
@@ -196,19 +194,18 @@ class InvisCloak (Algorithm):
         """
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
-        # 定义红色范围（可能需根据你的披风颜色调整）
+        # Define the red range
         lower_red1 = np.array([0, 150, 120])
         upper_red1 = np.array([10, 255, 255])
         lower_red2 = np.array([170, 150, 120])
         upper_red2 = np.array([180, 255, 255])
 
-        # 生成掩码（两个红色段）
+        # Generate Mask
         mask1 = cv2.inRange(hsv, lower_red1, upper_red1)
         mask2 = cv2.inRange(hsv, lower_red2, upper_red2)
         mask = cv2.bitwise_or(mask1, mask2)
 
-        # 目前只完成了掩码生成
-        self.binary_mask = mask  # 保存下来，后续 2.3.2 和 2.3.3 要用
+        self.binary_mask = mask 
 
 
         """
@@ -221,17 +218,16 @@ class InvisCloak (Algorithm):
         mask_clean = cv2.morphologyEx(self.binary_mask, cv2.MORPH_OPEN, kernel, iterations=2)
         mask_clean = cv2.morphologyEx(mask_clean, cv2.MORPH_CLOSE, kernel, iterations=2)
 
-        # 找最大连通区域
+        # Find the maximum connectivity area
         num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(mask_clean, connectivity=8)
 
         if num_labels > 1:
-            # 跳过背景 label=0，从1开始
             max_label = 1 + np.argmax(stats[1:, cv2.CC_STAT_AREA])
             mask_largest = np.uint8(labels == max_label) * 255
         else:
             mask_largest = mask_clean
 
-        self.binary_mask = mask_largest  # 更新掩码用于后续背景替换
+        self.binary_mask = mask_largest
 
         """
             Hier steht Ihr Code zu Aufgabe 2.3.1 (Bildmodifizerung)
@@ -244,24 +240,22 @@ class InvisCloak (Algorithm):
             self.click_triggered = False
 
         if self.click_triggered and self.background is None:
-            # 用户点击后保存背景
             self.background = img.copy()
-            print("✅ Hintergrund wurde gespeichert.")
-            return img  # 本帧不做替换
+            print("Background has been saved.")
+            return img
 
         if self.background is None:
-            return img  # 还没保存背景
+            return img
 
-        # 创建前景遮罩（非披风区域）
+        # Create foreground mask
         mask_inv = cv2.bitwise_not(self.binary_mask)
 
-        # 提取非披风区域的当前图像部分
+        # Extract the current image portion of the non-cloaked area
         fg = cv2.bitwise_and(img, img, mask=mask_inv)
 
-        # 提取披风区域的背景部分
+        # Extract the background portion of the cloak area
         bg = cv2.bitwise_and(self.background, self.background, mask=self.binary_mask)
 
-        # 合并：披风→背景，其它→保留
         img = cv2.add(fg, bg)
 
         return img
