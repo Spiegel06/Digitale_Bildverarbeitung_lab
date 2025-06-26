@@ -1,0 +1,15 @@
+\BOOKMARK [1][-]{section.1}{Einleitung}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Vorbereitung}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{Programmierumgebung}{section.1}% 3
+\BOOKMARK [1][-]{section.2}{Aufgabe}{}% 4
+\BOOKMARK [2][-]{subsection.2.1}{Vorverarbeitung}{section.2}% 5
+\BOOKMARK [3][-]{subsubsection.2.1.1}{Rauschreduktion}{subsection.2.1}% 6
+\BOOKMARK [3][-]{subsubsection.2.1.2}{Histogramm Spreizung}{subsection.2.1}% 7
+\BOOKMARK [2][-]{subsection.2.2}{Farbanalyse}{section.2}% 8
+\BOOKMARK [3][-]{subsubsection.2.2.1}{RGB}{subsection.2.2}% 9
+\BOOKMARK [3][-]{subsubsection.2.2.2}{HSV}{subsection.2.2}% 10
+\BOOKMARK [2][-]{subsection.2.3}{Segmentierung und Bildmodifizierung}{section.2}% 11
+\BOOKMARK [3][-]{subsubsection.2.3.1}{Statisches Schwellwertverfahren}{subsection.2.3}% 12
+\BOOKMARK [3][-]{subsubsection.2.3.2}{Bin\344rmaske}{subsection.2.3}% 13
+\BOOKMARK [3][-]{subsubsection.2.3.3}{Bildmodifizierung}{subsection.2.3}% 14
+\BOOKMARK [1][-]{section.3}{Zusammenfassung}{}% 15

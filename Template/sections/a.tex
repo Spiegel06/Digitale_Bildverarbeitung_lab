@@ -1,0 +1,65 @@
+\newpage
+\section{Aufgabe}
+Das Ziel ist die Detektion des \glqq magischen Umhangs\grqq\ sowie das k\"unstliche Entfernen eines Objektes im Vordergrund. Daf\"ur werden in diesem Labor drei Arbeitspakete bearbeitet: Die Vorverarbeitung, die Farbanalyse der Szene und die Segmentierung des Umhangs. Eine Skizze der Bildverarbeitungs-Pipeline ist in Abbildung \ref{fig:skizzepipeline} dargestellt.
+
+\begin{figure}
+\centering
+
+\tikzstyle{decision} = [diamond, draw, fill=blue!20, text width=4.5em, text badly centered, node distance=3cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw, fill=blue!20, text width=8em, text centered, rounded corners, minimum height=4em]
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=4cm, minimum height=2em]
+\begin{tikzpicture}[node distance = 2cm, auto]
+   % Place nodes
+
+
+\node [block, fill=green!20] (Rauschreduktion) {Rauschreduktion};
+\node [block, fill=green!20, below of=Rauschreduktion] (Histogramm) {Histogramm Spreizung};
+\node [block, fill=yellow!20, below of=Histogramm] (Farbanalyse) {Farbanalyse};
+\node [block, fill=blue!20, below of=Farbanalyse] (Schwellwertverfahren) {Schwellwert-verfahren};
+\node [block, fill=blue!20, below of=Schwellwertverfahren] (Maske) {Bin\"armasken-Optimierung};
+\node [block, fill=blue!20, below of=Maske] (Bildmodifizierung) {Bildmodifizierung};
+\node [cloud, left of=Rauschreduktion] (Webcam) {Webcam};
+\node [cloud,right of=Bildmodifizierung] (Output1) {Screen};
+\node [cloud,below of=Output1, node distance=1.5cm] (Output2) {Virtuelle Kamera};
+\node [cloud,left of=Bildmodifizierung] (Input2) {Maus-Events};
+%\node [cloud, left of=init] (expert) {expert};
+%\node [cloud, right of=init] (system) {system};
+%\node [block, below of=init] (identify) {identify candidate models};
+%\node [block, below of=identify] (evaluate) {evaluate candidate models};
+%\node [block, left of=evaluate, node distance=3cm] (update) {update model};
+%\node [decision, below of=evaluate] (decide) {is best candidate better?};
+%\node [block, below of=decide, node distance=3cm] (stop) {stop};
+
+
+% Draw edges
+\path [line] (Webcam) -- (Rauschreduktion);
+\path [line] (Rauschreduktion) -- (Histogramm);
+\path [line] (Histogramm) -- (Farbanalyse);
+\path [line] (Farbanalyse) -- (Schwellwertverfahren);
+\path [line] (Schwellwertverfahren) -- (Maske);
+\path [line] (Maske) -- (Bildmodifizierung);
+\path [line] (Bildmodifizierung) -- (Output1);
+\path [line,dashed] (Bildmodifizierung) -- (Output2);
+\path [line] (Input2) -- (Bildmodifizierung);
+%\path [line] (identify) -- (evaluate);
+%\path [line] (evaluate) -- (decide);
+%\path [line] (decide) -| node [near start] {yes} (update);
+%\path [line] (update) |- (identify);
+%\path [line] (decide) -- node {no}(stop);
+%\path [line,dashed] (expert) -- (init);
+%path [line,dashed] (system) -- (init);
+%\path [line,dashed] (system) |- (evaluate);
+
+\end{tikzpicture}
+\caption{Bildverarbeitungs-Pipeline}
+\label{fig:skizzepipeline}
+\end{figure}
+
+Die Szene f\"ur diesen Versuch wird durch Sie definiert: W"ahlen Sie sich eine eint"onige, m"oglichst monotone  Umgebung als Szene f\"ur diesen Versuch. Der \glqq magische Umhang\grqq\ wird dann durch einen einfarbigen Gegenstand (es muss kein Umhang sein!) realisiert. Achten Sie darauf, dass sich der Umhang farblich von der Szene unterscheidet. Je st"arker der Kontrast zwischen \glqq Umhang\grqq\ und Szene ist, desto besser l"asst sich dieser Versuch durchf"uhren.  
+
+
+Im folgenden finden Sie detaillierte Beschreibungen der Arbeitspakete. Bitte beantworten Sie die vorhandenen Fragen und erstellen Sie ggf.\ geforderten Code oder Abbildungen. Die Bearbeitung der Fragen kann entweder innerhalb dieses Latex Dokuments, oder in einem separatem PDF geschehen. 
+
+
+

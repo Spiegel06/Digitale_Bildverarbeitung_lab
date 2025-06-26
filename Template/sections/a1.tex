@@ -1,0 +1,63 @@
+\newpage
+\subsection{Vorverarbeitung}
+Um die folgende Verarbeitung der Bilder zu vereinfachen und robuster zu gestalten, sollen Sie den Videostream mit einem Preprocessing vorverarbeiten. 
+Binden Sie dafür die Datei \textit{./CV-App/algorithms/invis\_cloak.py} in den Algorithmus ein, wie in der Einleitung beschrieben.
+Die folgenden Aufgabenstellungen sind in den dafür vorgesehenen Funktionen zu bearbeiten.
+%Erstellen Sie dafür einen neuen Algorithmus, wie in der Einleitung beschrieben. 
+
+\subsubsection{Rauschreduktion}
+Jeder Farbwert eines Pixels $I_k(x, y) \in \{0, \ldots, 255 \}$ mit $k\in \{R, G, B\}$ wird auf dem Kamerasensor durch einen elektrischen Halbleiter physikalisch gemessen. Je nach Sensorqualität und Lichtbedingungen wirkt dabei ein unterschiedlich ausgeprägtes Rauschen auf die Farbwerte ein, sodass der zur Verfügung stehende Farbwert als Summe
+
+\begin{equation}
+I_k(x, y) = I^*_k(x, y) + r(x, y)   
+\end{equation}
+
+aus realem Farbwert $I^*_k(x, y) $ und statistischem Rauschen $r(x,y)$ modelliert werden kann. Das Rauschen $r$ kann als normalverteilt um den Mittelwert $0$ angenommen werden. Unter den Annahmen, dass die Kamera statisch montiert ist und in der aufgenommenen Szene keine Veränderung passiert,  kann der Zusammenhang
+
+\begin{equation}
+	\overline{I}_{k,t}(x, y) =   \lim_{N\rightarrow \infty} \frac{1}{N + 1} \sum_{n=0}^N I^*_{k,t-n}(x, y) + r_{t-n}(x, y)  \stackrel{!}{=} I^*_{k,t}  
+\end{equation}
+
+für die Mittelwertbildung über lange Zeiträume formuliert werden. Dabei beschreibt $t$ den Zeitpunkt, zu dem der entsprechende Wert gemessen wurde.
+
+Um die Bildqualität zu erhöhen, soll der Einfluss von $r$ reduziert werden. Es soll dafür angenommen werden, dass die Kamera statisch ist und kaum Bewegung in zwei aufeinander folgenden Bildern vorhanden ist. 
+Implementieren Sie die Mittelwertbildung mit einer variablem Bildreihe $N$ (default: $N=1$) und geben Sie das Bild aus. \\
+Um zu prüfen wie das Bild auf Pixelebene arbeitet, kann die Variable \textit{plotNoise} in der Funktion \textit{process()} auf \textit{True} gesetzt werden.
+Es werden zwei zusätzliche Plots ausgegeben, in der ein Bildausschnitt des Zentrums vor- und nach der Rauschunterdrückung vergrößert dargestellt werden.
+
+
+\paragraph*{Aufgabe 1}
+Geben Sie Ihren Code an und beschreiben Sie ihn. Geben Sie nur relevante Code Bereiche an!
+ \lstset{caption={Vorverarbeitung, Aufgabe 1}}
+\begin{lstlisting}
+# Your code!
+\end{lstlisting} 
+
+\paragraph*{Aufgabe 2}
+Nennen Sie Vor und Nachteile, wenn $N$ vergrößert werden würde. Sollte $N$ in dieser Anwendung vergrößert werden?
+
+\paragraph*{Aufgabe 3}
+Beschreiben Sie eine weitere Methode zur Rauschreduktion. Diskutieren Sie dabei Vor- oder Nachteile!
+
+\subsubsection{Histogramm Spreizung}
+Pixel können in unserer Anwendung Werte von $I_k(x,y) \in \{ 0, \ldots , 255 \}$ annehmen. Dieser Wertebereich wird nicht zwangsläufig ausgenutzt. Um das zu ändern, soll eine Histogramm Spreizung auf den Helligkeitsinformationen der Pixel durchgeführt werden.
+
+Implementieren Sie zusätzlich zur Rauschreduktion eine Histogramm Spreizung, indem sie (1) das Rausch-reduzierte Eingangsbild in den HSV-Farbbereich transformieren und (2) die Rechenvorschrift~\ref{equ:histogramm-equalization} auf den V-Kanal anwenden. Transformieren Sie das Bild dann (3) wieder in den RGB Farbraum.
+
+\begin{equation}
+\label{equ:histogramm-equalization}
+I_V^{\textnormal{new}}(x,y) = \frac{I_{V}(x,y) - \min I_{V}}{\max I_{V} - \min I_{V}} \cdot 255
+\end{equation}
+
+\textbf{Hinweis:} Nutzen Sie die Befehle \textit{cv2.cvtColor(img, cv2.COLOR\_BGR2HSV)} beziehungsweise \textit{cv2.cvtColor(img, cv2.COLOR\_HSV2BGR)}.
+
+
+\paragraph*{Aufgabe 4}
+Geben Sie Ihren Code an und beschreiben Sie ihn. Geben Sie nur relevante Code Bereiche an!
+\lstset{caption={Vorverarbeitung, Aufgabe 4}}
+\begin{lstlisting}
+# Your code!
+\end{lstlisting} 
+
+\paragraph*{Aufgabe 5}
+Warum ist es sinnvoll, den gesamten Wertebereich für die Darstellung von Videos in Multimedia-Anwendungen auszunutzen?

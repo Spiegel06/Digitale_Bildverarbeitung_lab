@@ -1,0 +1,64 @@
+\newpage
+\subsection{Farbanalyse}
+Die Zugrundeliegende Aufgabe ist die Detektion des \glqq magischen Umhangs\grqq , der Objekte verschwinden lassen kann. Der Umhang kann durch eine einfarbige Decke modelliert werden. Sollte keine einfarbige Decke vorhanden sein, kann ebenfalls ein einfarbiges Blatt Papier zur Hilfe genommen werden.
+
+Das Ziel des Arbeitspakets \glqq Farbanalyse\grqq\ ist es, die farblichen Eigenschaften der Szene, sowie des \glqq magischen Umhangs\grqq\ zu untersuchen. Dafür sollen die Histogramme einzelner Farbkanäle mit und ohne Umhang erstellt und analysiert werden.
+
+\textbf{Hinweis:} Versuchen Sie von nun an die Position der Kamera nicht mehr zu verändern!
+
+\subsubsection{RGB}
+Einzelne Pixel werden durch drei Werte repräsentiert. Jeweils ein Wert $I_k(x, y) \in \{0, \ldots, 255 \}$ mit $k\in \{R, G, B\}$  beschreibt die einfallende Lichtmenge für die Farben Rot, Grün und Blau. In OpenCV werden Bilder im BGR Format repräsentiert. Die Verteilung der Farbwerte kann durch ein Histogramm dargestellt werden. Ein Histogramm 
+\begin{equation}
+h(v) = |I_v| 
+\end{equation}
+beschreibt die Anzahl der Menge Pixel $I_v$ im Bild, welche den Wert $v$ haben. In OpenCV kann das Histogramm mit der Funktion \textit{cv2.calcHist(image, [Kanal], None, [histSize], histRange, False)} berechnet werden. Dabei gibt \textit{histSize} die Anzahl der Intervalle und $\textit{histRange} = (0, 256)$ die obere und untere Schrank für den zu betrachtenden Wertebereich an.
+
+Implementieren Sie in Ihren Algorithmus eine Funktion, mit dem Sie per Mausklick das aktuelle Bild speichern können. Des Weiteren soll bei Betätigung des Mausklicks ein Histogramm für jeden Farbkanal des RGB-Bilder erstellt und abgespeichert werden. Mit Hilfe des Code-Schnipsel in Code \ref{lst:Histogramm} kann ein Histogramm angezeigt oder gespeichert werden!
+
+\begin{lstlisting}[caption={Histogrammberechnung mit \textit{matplotlib}},label={lst:Histogramm}]
+import cv2 
+from matplotlib import pyplot as plt
+
+channel = 0 #[0:B, 1:G, 2:R]
+hist_size = 256
+hist_range = [0,256]
+histr = cv2.calcHist([img], [channel], None, [hist_size], hist_range)
+plt.plot(histr, color = "b")
+plt.xlim([0,256])
+plt.savefig('the_path_to_store.png')
+plt.show()
+\end{lstlisting} 
+
+Nehmen Sie mit dem fertig implementierten Code ein Bild und die Histogramme in der von Ihnen präferierten Szene auf. Nehmen Sie sich darauf den \glqq magischen Umhang\grqq zur Seite und halten ihn sehr gut sichtbar vor die Kamera. Nehmen Sie auch jetzt ein Bild mit den Histogrammen auf. Die Kamera sollte sich zwischen den beiden Bildern nicht bewegen.
+
+
+\paragraph*{Aufgabe 1}
+Geben Sie Ihren Code an und beschreiben Sie ihn. Geben Sie nur relevante Code Bereiche an! Geben sie zusätzlich die aufgenommenen Bilder und die erstellten Histogramme an.
+  
+\lstset{caption={Farbanalyse, Aufgabe 1}}
+\begin{lstlisting}
+# Your code!
+\end{lstlisting} 
+
+\paragraph*{Aufgabe 2}
+Interpretieren Sie die Veränderungen zwischen den  Histogrammen mit und ohne \glqq magischen Umhang\grqq . Verhalten sich die einzelnen Kanäle gleich? Lassen sich Bereiche in den Histogrammen herausstellen, die dem Umhang zuzuordnen sind? Diskutieren Sie Ihre Beobachtungen.
+
+\subsubsection{HSV}
+Erweitern Sie ihren vorherigen Code um eine Farbkonvertierung in den HSV-Farbraum. Führen Sie die Konvertierung vor Erstellung der Histogramme durch und wiederholen Sie die Schritte aus dem vorherigen Aufgabenteil. 
+
+\paragraph*{Aufgabe 3}
+Geben sie die aufgenommenen Bilder und die erstellten Histogramme an.
+
+\paragraph*{Aufgabe 4}
+Interpretieren Sie die Veränderungen zwischen den  Histogrammen mit und ohne \glqq magischen Umhang\grqq . Verhalten sich die einzelnen Kanäle gleich? Lassen sich Bereiche in den Histogrammen herausstellen, die dem Umhang zuzuordnen sind? Diskutieren Sie Ihre Beobachtungen.
+
+\paragraph*{Aufgabe 5}
+Versuchen Sie mit den gegebenen Histogrammen Wertebereiche zu finden, mit denen Sie den \glqq magischen Umhang\grqq\ segmentieren könnten. Formulieren Sie eine Regel in dem Format
+\begin{equation}
+\label{equ:segrule}
+	S_\textnormal{Umhang} = \{ I(x, y)\ |\  \\  R_\textnormal{min} < I_R(x, y) <  R_\textnormal{max} \ \ \textnormal{und} \ \ \ldots \}  \quad ,
+\end{equation}
+wobei $S_\textnormal{Umhang}$ die Binärmaske beschreibt und $R_\textnormal{min}$ und $R_\textnormal{max}$ beispielhafte Schwellwerte für den Rot-Kanal sind.
+
+\paragraph*{Aufgabe 6}
+Worauf muss geachtet werden, wenn mit dem H-Kanal des HSV-Farbraums gearbeitet wird?

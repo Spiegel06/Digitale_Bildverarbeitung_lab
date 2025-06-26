@@ -1,0 +1,87 @@
+\documentclass[class=article, crop=false]{standalone}
+\usepackage{standalone}
+\usepackage{labor}
+\usepackage{pageslts}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage[latin1]{inputenc}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+
+% Verwendung von Umlauten
+\usepackage[ngerman]{babel}
+% Auf Windows folgendes Paket verwenden
+%\usepackage[ansinew]{inputenc}
+% Auf Mac folgendes Paket verwenden
+%\usepackage[applemac]{inputenc}
+
+\lstset{ 
+	language=python,
+	basicstyle=\footnotesize\ttfamily,
+	%basicstyle=\ttfamily
+	numbers=left,
+	stepnumber=1,
+	tabsize=4,
+	frame=lines,
+}
+
+\renewcommand{\lstlistingname}{Code}% Listing -> Algorithm
+
+\begin{document}
+
+	\pagenumbering{arabic}
+	\newpage
+	\thispagestyle{empty}
+	
+	\begin{center}
+		\normalfont \sffamily 
+		\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lr@{}}
+			{INSTITUT F\"{U}R } & {\small Appelstra\ss e 9A} \\
+			{INFORMATIONSVERARBEITUNG} & {\small 30167 Hannover} \\
+			{\small LEIBNIZ UNIVERSIT\"{A}T HANNOVER} & 
+		\end{tabular*}
+	\end{center}
+	
+	\vspace{1.5cm}
+	\begin{center}
+	{\Large Labor zur Vorlesung\\[.2cm] {\normalfont\bfseries Digitale Bildverarbeitung}}
+	\end{center}
+
+	
+	%\addcontentsline{toc}{}{Titelblatt}
+	
+	\vspace{2cm}
+	
+	\begin{tabular}{@{}p{4cm}l}
+		Datum:                  & XX.XX.XXXX \\
+		Uhrzeit:                & XX:XX \\
+		Anzahl der Bl\"{a}tter: & \lastpageref*{LastPages} (einschlie\ss{}lich Deckblatt)
+		
+	\end{tabular}
+	
+	\vspace{3cm}
+	
+	\begin{tabular}{@{}p{4cm} l }
+	{\normalfont\bfseries Name:} & 	{\normalfont\bfseries Matrikelnummer:}\\ 
+	$\underline{\hspace{5cm}}$  \hspace{0.5cm}& $\underline{\hspace{5cm}}$ \\
+	$\underline{\hspace{5cm}}$ \hspace{0.5cm}& $\underline{\hspace{5cm}}$\\
+	$\underline{\hspace{5cm}}$ \hspace{0.5cm}& $\underline{\hspace{5cm}}$\\
+	\end{tabular}
+		
+	\vspace{2.0cm}
+	
+	Die Bearbeitung der Aufgaben erfolgt selbstständig in Kleingruppen. Alle Gruppenmitglieder sollen Arbeitsaufwand in gleicher Größenordnung einbringen. Betrugsversuche werden geahndet. 
+
+
+\tableofcontents
+
+\include{sections/overview}
+\include{sections/a}
+\include{sections/a1}
+\include{sections/a2}
+\include{sections/a3}
+\include{sections/conclusion}
+
+\end{document}
+

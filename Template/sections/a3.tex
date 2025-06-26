@@ -1,0 +1,81 @@
+\newpage
+\subsection{Segmentierung und Bildmodifizierung}
+In diesem Arbeitspaket werden Sie auf Grundlage der vorherigen Analysen eine Segmentierung des magischen Umhangs realisieren. Anschließend werden Sie den segmentierten Bereich \glqq verschwinden\grqq\ lassen, indem sie ein statisches Bild des Hintergrunds auf diese Flächen einfügen.
+
+
+\subsubsection{Statisches Schwellwertverfahren}
+Implementieren Sie die von Ihnen gefundene Regel nach Gleichung~\ref{equ:segrule}, um eine Binärmaske zu erhalten. Sie können die Randbedingungen wie im folgenden Code-Schnipsel \ref{lst:conditions} implementieren.
+
+\begin{lstlisting}[caption={Benutzung von Randbedingungen mit \textit{numpy}}, label={lst:conditions}]
+import cv2 
+import numpy as np
+
+channel1 = 0
+lower_bound1, upper_bound1 = 15, 100
+is_condition_1_true = (lower_bound1 < img[:, :, channel1]) * \
+	(img[:, :, channel1] < upper_bound1)
+channel2 = 1
+lower_bound2, upper_bound2 = 65, 172
+is_condition_2_true = (lower_bound2 < img[:, :, channel2]) * \
+(img[:, :, channel2] < upper_bound2)
+
+binary_mask = is_condition_1_true * is_condition_2_true
+\end{lstlisting} 
+
+Geben Sie die gefundene Binärmaske als Ausgangsbild auf dem Bildschirm aus. Sollten die gefundenen Wertebereich zu keinen sinnvollen Segmentierungen führen, dürfen Sie Gleichung~\ref{equ:segrule} selbstverständlich anpassen!
+
+Implementieren Sie ebenfalls eine Mausklick-Funktion, mit der Sie das aktuelle Bild und die dazugehörige Binärmaske abspeichern können. Für das Abspeichern von Bildern können Sie die Funktion \textit{cv2.imwrite(img, "path\_to\_store.png")} verwenden.
+
+\paragraph*{Aufgabe 1}
+Geben Sie Ihren Code an und beschreiben Sie ihn. Geben Sie nur relevante Code Bereiche an! Geben Sie ebenfalls das aufgenommene Bild sowie die dazugehörige Binärmaske an.
+
+\lstset{caption={Segmentierung und Bildmodifizierung, Aufgabe 1}}
+\begin{lstlisting}
+# Your code!
+\end{lstlisting} 
+
+\subsubsection{Binärmaske}
+Die in der vorherigen Aufgabe erhaltene Binärmaske ist ggf.\ ungeeignet für eine zufriedenstellende Segmentierung. Sie sollen die Maske nun optimieren. Wenden Sie dafür das \textit{Opening} und \textit{Closing} auf die Binärmaske an.  Nutzen Sie die Funktionen \textit{cv2.erode(img, kernel)} und \textit{cv2.dilate(img, kernel)}. 
+
+Wählen Sie zum Schluss die größte zusammenhänge Region segmentierter Pixel aus, und löschen alle anderen Segmente. Folgender Code-Schnipsel~\ref{lst:contours} soll als Hilfestellung dienen. Recherchieren Sie ggf.\ im Internet.  
+
+\lstset{caption={Konturfindung}}
+\lstset{label={lst:contours}}
+\begin{lstlisting}
+(cnts, _) = cv2.findContours(
+		binary_mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+c = max(cnts, key = cv2.contourArea)
+img = cv2.drawContours(img, [c], -1, color=255, -1)
+\end{lstlisting} 
+
+\paragraph*{Aufgabe 2}
+Geben Sie Ihren Code an und beschreiben Sie ihn. Geben Sie nur relevante Code Bereiche an!
+\lstset{caption={Segmentierung und Bildmodifizierung, Aufgabe 2}}
+\begin{lstlisting}
+# Your code!
+\end{lstlisting} 
+
+\paragraph*{Aufgabe 3}
+Welche Probleme oder Fehler können in der Binärmaske vorkommen, die mit den Maßnahmen beseitigt werden sollen?
+
+\subsubsection{Bildmodifizierung}
+Nach dem Fertigstellen der vorherigen Aufgabenstellungen sollten Sie nun eine Binärmaske erhalten, welche den \glqq magischen Umhang\grqq\ segmentiert. Die letzte Aufgabe befasst sich mit der Bildmodifizierung, welche den Eindruck verschwindender Objekte vermittelt.
+
+Sie sollen nun folgende Funktionen implementieren: 
+
+Erstellen Sie eine Member-Variable (z.B. \textit{self.variable}) in die Algorithmus Funktion \textit{\_\_init\_\_()}. Initiieren Sie die Variable mit dem Wert \textit{None}.
+Modifizieren Sie den Algorithmus, sodass Sie mit einem Mausklick ein Bild in die Variable speichern können. Dieses Bild wird als Hintergrund definiert. Mausklick-Funktionen aus vorherigen Aufgaben können überschrieben werden! 
+
+Solange kein Bild in der Variable gespeichert ist, soll das Eingangsbild direkt wieder ausgegeben werden. Sobald ein Hintergrund vorhanden ist soll folgendes passieren: Modifizieren Sie das Bild, indem Sie das Ausgangsbild aus dem derzeitigen Kamera-Stream und dem Hintergrund zusammenfügen. Die durch die Binärmaske segmentierte Fläche soll aus dem Hintergrund entnommen werden, die unsegmentierte Fläche aus dem derzeitigen Videostream.
+
+\textbf{Hinweis:} Verlassen Sie das Sichtfeld der Kamera, während Sie die Hintergrund Aufnahme aufnehmen. 
+
+\paragraph*{Aufgabe 4}
+Geben Sie Ihren Code an und beschreiben Sie ihn. Geben Sie nur relevante Code Bereiche an! 
+\lstset{caption={Segmentierung und Bildmodifizierung, Aufgabe 4}}
+\begin{lstlisting}
+# Your code!
+\end{lstlisting} 
+
+\paragraph*{Aufgabe 5}
+Geben Sie ein Bild (z.B. Screenshot) an, in dem die Funktion Ihres \glqq magischen Umhangs\grqq\  gezeigt wird!
